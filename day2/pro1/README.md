@@ -1,0 +1,1 @@
+We have provisiong multiple  ec2 instance in multiple regions. (use multiple providers )

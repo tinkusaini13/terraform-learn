@@ -1,0 +1,1 @@
+provising resource using variable in main.tf file 
