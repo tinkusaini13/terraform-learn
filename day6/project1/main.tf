@@ -8,7 +8,6 @@ locals {
   az = "ap-south-1a"
 }
 
-
 resource "aws_vpc" "dev_vpc" {
     cidr_block = "10.0.0.0/16"
     enable_dns_support = true
@@ -19,7 +18,8 @@ resource "aws_vpc" "dev_vpc" {
     }
 }
 
-###  subnet createing  ###
+## subnet create
+
 resource "aws_subnet" "dev_subnet" {
 vpc_id = aws_vpc.dev_vpc.id
 cidr_block = "10.0.0.0/16"
@@ -30,7 +30,8 @@ map_public_ip_on_launch = "true"
     }
 }
 
-# create internet getway
+## create internet getway
+
 resource "aws_internet_gateway" "dev_igw" {
   vpc_id = aws_vpc.dev_vpc.id
   tags   = {
@@ -38,23 +39,21 @@ resource "aws_internet_gateway" "dev_igw" {
   }
 }
 
+## Create Custom Route Table
 
-### Create Custom Route Table
 resource "aws_route_table" "dev_route_tb" {
   vpc_id = aws_vpc.dev_vpc.id
-
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.dev_igw.id
   }
 }
 
-#### associate route table to subnet
+## associate route table to subnet
 
 resource "aws_route_table_association" "dev_route_tb_associate" {
        subnet_id = "${aws_subnet.dev_subnet.id}"
        route_table_id = "${aws_route_table.dev_route_tb.id}"
-
 }
 
 
@@ -77,7 +76,7 @@ resource "aws_volume_attachment" "vol_attach" {
   force_detach       = false
 }
 
-# aws instance
+## aws instance
 
 resource "aws_instance" "dev_ec2" {
 ami = "ami-0287a05f0ef0e9d9a"
@@ -152,6 +151,4 @@ resource "aws_key_pair" "generated_key" {
       chmod 400 ./'${var.dev}'.pem
     EOT
   }
-
 }
-
