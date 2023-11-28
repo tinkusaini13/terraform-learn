@@ -31,12 +31,13 @@ map_public_ip_on_launch = "true"
 }
 
 # create internet getway
-resource "aws_internet_gateway" "dev_igw"{
-vpc_id = aws_vpc.dev_vpc.id
-tags = {
-  Name = "${local.env}-igw"
+resource "aws_internet_gateway" "dev_igw" {
+  vpc_id = aws_vpc.dev_vpc.id
+  tags   = {
+    Name = "${local.env}-igw"
+  }
 }
-}
+
 
 ### Create Custom Route Table
 resource "aws_route_table" "dev_route_tb" {
@@ -56,6 +57,26 @@ resource "aws_route_table_association" "dev_route_tb_associate" {
 
 }
 
+
+## create ebs volume and attched
+
+resource "aws_ebs_volume" "data1" {
+  availability_zone = "ap-south-1a"  # Make sure this matches the availability zone of your EC2 instance
+  size              = 5
+  type              = "gp2"
+
+  tags = {
+    Name = "dev-vol"
+  }
+}
+
+resource "aws_volume_attachment" "vol_attach" {
+  volume_id          = aws_ebs_volume.data1.id
+  instance_id        = aws_instance.dev_ec2.id
+  device_name        = "/dev/sdf"  # Replace with your desired device name
+  force_detach       = false
+}
+
 # aws instance
 
 resource "aws_instance" "dev_ec2" {
@@ -65,6 +86,15 @@ subnet_id = aws_subnet.dev_subnet.id
 availability_zone = "${local.az}"
 vpc_security_group_ids = [aws_security_group.dev_sg.id]
 key_name   = "${local.env}"
+user_data = file("httpd.sh")
+
+## managing  volume size
+
+root_block_device {
+    volume_type = "gp2"
+    volume_size = "13"
+    delete_on_termination = true
+  }
 tags = {
         Name = "${local.env}-team-ops"
 }
@@ -81,6 +111,7 @@ resource "aws_security_group" "dev_sg" {
        to_port = 80
        protocol = "tcp"
        cidr_blocks = ["0.0.0.0/0"]
+       description = "Allow only http request"
         }
 
     ingress {
@@ -88,13 +119,15 @@ resource "aws_security_group" "dev_sg" {
         to_port = 22
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "Allow only SSH Request"
     }
 
     egress {
-        from_port   = 22
-        to_port = 22
-        protocol = "tcp"
+        from_port   = 0
+        to_port = 0
+        protocol = "-1"
         cidr_blocks = ["0.0.0.0/0"]
+        description = "Allow All outbound traffic"
     }
 }
 
@@ -121,3 +154,4 @@ resource "aws_key_pair" "generated_key" {
   }
 
 }
+
