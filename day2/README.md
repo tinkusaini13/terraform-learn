@@ -63,7 +63,8 @@ Q6. Can I define variable dependencies in Terraform?
 
 ##  Read Environment Variable from local system in Terraform Configurations
 - Set the variable:
-        export TF_VAR_FirstName=sainiji
+  
+                        export TF_VAR_FirstName=sainiji
 
 FirstName is a variable in our terrafrom variable file
 
