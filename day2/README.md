@@ -61,6 +61,12 @@ Q5. Are there any naming conventions for Terraform variables?
 Q6. Can I define variable dependencies in Terraform?
 - Terraform does not have direct variable dependencies. However, you can use outputs in conjunction with variables to create dependencies between resources and retrieve values from one resource to use as input for another.
 
+##  Read Environment Variable from local system in Terraform Configurations
+- Set the variable:
+        export TF_VAR_FirstName=sainiji
+
+FirstName is a variable in our terrafrom variable file
+
 ## Using Custome terraform file....
     terraform plan -var-file=dev.tfvars
 
