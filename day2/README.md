@@ -64,67 +64,11 @@ Q6. Can I define variable dependencies in Terraform?
 
 ### Example:
 
-cat main.tf
+## Terraform variable file:
+![image](https://github.com/tinkusaini13/terraform-learn/assets/88707521/5da50676-8cd0-4d36-98da-0b87f8da9379)
 
-output "name" {
-  value = var.username
-}
+## Terraform main file:
+![image](https://github.com/tinkusaini13/terraform-learn/assets/88707521/f88e022c-b96c-4b0e-82e8-4616b4efb221)
 
-output "age" {
-  value = var.age
-}
-
-output "city" {
-//value = "Hey This is my city ${tostring(var.city[0])}"
-//if you need all list print in output then use join funcation join(" ",var.your_fun_name)
-  //value = "Hey This is my city ${join(" ",var.city)}"
-  //value = "Hey This is my city ${join("->",var.city)}"
-  value = "Hey This is my city ${join("--", var.city)}"
-}
-
-output "developers" {
-  value = "Here is the developers name from map variable to print ${lookup(var.developers, "F_name")}"
-}
-
-
-output "tester" {
-  value = "Here is the tester name from map dynamic variable  ${lookup(var.tester, "${var.tester_name}")}"
-}
-
-
-
-cat variable.tf
-
-variable "username" {
-  type    = string
-  default = "tinku"
-}
-variable "age" {
-  type = number
-}
-variable "city" {
-  type    = list(any)
-  default = ["Jaipur", "Ajmer", "Pune"]
-}
-variable "developers" {
-  type = map(any)
-  default = {
-    F_name  = "Aman"
-    L_name  = "kumar"
-  }
-}
-variable "tester" {
-  type = map(any)
-  default = {
-    Team-a  = "dev"
-    Team-b  = "qa"
-  }
-}
-variable "tester_name"{
-  type = string
-}
-
-
-
-terraform plan
+## terraform plan
 ![image](https://github.com/tinkusaini13/terraform-learn/assets/88707521/3849df91-5e61-4c83-9f8d-ffcabef66a36)
