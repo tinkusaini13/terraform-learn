@@ -127,17 +127,4 @@ variable "tester_name"{
 
 
 terraform plan
-
-var.age
-  Enter a value: 23
-
-var.tester_name
-  Enter a value: Team-a
-
-
-Changes to Outputs:
-  + age        = 23
-  + city       = "Hey This is my city Jaipur--Ajmer--Pune"
-  + developers = "Here is the developers name from map variable to print Aman"
-  + name       = "tinku"
-  + tester     = "Here is the tester name from map dynamic variable  dev"
+![image](https://github.com/tinkusaini13/terraform-learn/assets/88707521/3849df91-5e61-4c83-9f8d-ffcabef66a36)
